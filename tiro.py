@@ -5,6 +5,7 @@ from freegames import vector
 ball = vector(-200, -200)
 speed = vector(0, 0)
 targets = []
+squares = []
 
 def tap(x, y):
     "Respond to screen tap."
@@ -19,12 +20,20 @@ def inside(xy):
     return -200 < xy.x < 200 and -200 < xy.y < 200
 
 def draw():
-    "Draw ball and targets."
+    "Draw ball, targets, and squares."
     clear()
 
     for target in targets:
         goto(target.x, target.y)
         dot(20, 'blue')
+
+    for square in squares:
+        goto(square.x, square.y)
+        begin_fill()
+        for _ in range(4):
+            forward(40)
+            right(90)
+        end_fill()
 
     if inside(ball):
         goto(ball.x, ball.y)
@@ -33,14 +42,22 @@ def draw():
     update()
 
 def move():
-    "Move ball and targets."
+    "Move ball, targets, and squares."
     if randrange(40) == 0:
         y = randrange(-150, 150)
         target = vector(200, y)
         targets.append(target)
 
+    if randrange(40) == 0:
+        y = randrange(-150, 150)
+        square = vector(200, y)
+        squares.append(square)
+
     for target in targets:
         target.x -= 0.5
+
+    for square in squares:
+        square.x -= 0.5
 
     if inside(ball):
         speed.y -= 0.35
@@ -68,4 +85,5 @@ tracer(False)
 onscreenclick(tap)
 move()
 done()
+
 
